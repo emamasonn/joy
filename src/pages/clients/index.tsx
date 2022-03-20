@@ -1,44 +1,26 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import Layout from "../../layout";
 import Header from "./components/Header";
-import ItemMenu from "./components/ItemMenu";
+import ShopingCartDrawer from "./components/ShopingCartDrawer";
+import ListMenu from "./components/ListMenu";
+import { ShopingCartProvider } from "./providers/ShopingCartContext";
+import { ShopingCart } from "./types";
 
 const Clients = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const initialValue: { [key: string]: ShopingCart } = {};
+
   return (
     <Layout justifyContent="center">
-      <Box maxWidth="600px" w="100%">
-        <Header />
-        <Flex direction="column">
-          <ItemMenu
-            title="Titulo de la comida"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo consequat."
-            img="https://bit.ly/dan-abramov"
-            price="2.224"
-          />
-          <ItemMenu
-            title="Titulo de la comida"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo consequat."
-            img="https://bit.ly/dan-abramov"
-            price="2.224"
-          />
-          <ItemMenu
-            title="Titulo de la comida"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo consequat."
-            img="https://bit.ly/dan-abramov"
-            price="2.224"
-          />
-        </Flex>
-      </Box>
+      <ShopingCartProvider initialValue={initialValue}>
+        <Box maxWidth="600px" w="100%">
+          <ShopingCartDrawer isOpen={isOpen} onClose={onClose} />
+          <Header onOpen={onOpen} />
+          <ListMenu />
+        </Box>
+      </ShopingCartProvider>
     </Layout>
   );
 };

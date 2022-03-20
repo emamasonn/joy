@@ -1,20 +1,70 @@
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { Box, Heading, Image, Text, Flex, Button, Img } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import { Product } from "../types";
 //@ts-ignore
 import iconArrowDown from "../../../svg/circle-arrow-down-solid.svg";
 //@ts-ignore
 import iconArrowUp from "../../../svg/circle-arrow-up-solid.svg";
+import { useShopingCart } from "../providers/ShopingCartContext";
 
 type Props = {
-  title: string;
-  description: string;
-  img: string;
-  price: string;
+  total?: number;
 };
 
-const ItemMenu = ({ title, description, img, price }: Props) => {
+const ItemMenu = ({
+  title,
+  description,
+  img,
+  price,
+  id,
+  total,
+}: Product & Props) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
+  const [shopingCart, setShopingCart] = useShopingCart();
+
+  const addProductToShopingCart = (product: Product): void => {
+    const { title, description, img, price, id } = product;
+    !!shopingCart[`${id}`]
+      ? setShopingCart({
+          ...shopingCart,
+          [`${id}`]: {
+            ...shopingCart[`${id}`],
+            total: shopingCart[`${id}`]?.total + 1,
+          },
+        })
+      : setShopingCart({
+          ...shopingCart,
+          [`${id}`]: {
+            title,
+            description,
+            img,
+            price,
+            id,
+            total: 1,
+          },
+        });
+  };
+
+  const subtractProductToShopingCart = (id: string): void => {
+    if (!shopingCart[`${id}`] || !shopingCart[`${id}`]?.total) {
+      return;
+    }
+
+    if (!(shopingCart[`${id}`]?.total - 1)) {
+      const copyShopingCart = { ...shopingCart };
+      delete copyShopingCart[`${id}`];
+      setShopingCart({ ...copyShopingCart });
+    } else {
+      setShopingCart({
+        ...shopingCart,
+        [`${id}`]: {
+          ...shopingCart[`${id}`],
+          total: shopingCart[`${id}`]?.total - 1,
+        },
+      });
+    }
+  };
+
   return (
     <Flex
       p={3}
@@ -39,15 +89,21 @@ const ItemMenu = ({ title, description, img, price }: Props) => {
         <Flex
           direction="column"
           alignItems="flex-start"
-          justifyContent="flex-start"
+          justifyContent="space-between"
           mr="auto"
         >
-          <Heading fontSize="lg">{title} </Heading>
+          <Heading fontSize="md" lineHeight="4">
+            {title}
+          </Heading>
           <Text fontWeight="bold">{`$${price}`}</Text>
         </Flex>
         <Box>
           <Flex>
-            <Button colorScheme="pink" size="xs">
+            <Button
+              colorScheme="pink"
+              size="xs"
+              onClick={() => subtractProductToShopingCart(id)}
+            >
               -
             </Button>
             <Text
@@ -58,9 +114,15 @@ const ItemMenu = ({ title, description, img, price }: Props) => {
               w="20px"
               fontSize="medium"
             >
-              4
+              {!shopingCart[`${id}`]?.total ? 0 : shopingCart[`${id}`]?.total}
             </Text>
-            <Button colorScheme="pink" size="xs">
+            <Button
+              colorScheme="pink"
+              size="xs"
+              onClick={() =>
+                addProductToShopingCart({ title, description, img, price, id })
+              }
+            >
               +
             </Button>
           </Flex>

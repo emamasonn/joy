@@ -1,9 +1,13 @@
 import React from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Img, Text } from "@chakra-ui/react";
 // @ts-ignore
-import iconShopingCard from "../../../svg/cart-shopping-solid.svg";
+import iconShopingCart from "../../../svg/cart-shopping-solid.svg";
 
-const Header = () => {
+type Props = {
+  onOpen: () => void;
+};
+
+const Header = ({ onOpen }: Props) => {
   return (
     <Box
       p="3"
@@ -11,9 +15,11 @@ const Header = () => {
       alignItems="center"
       justifyContent="space-between"
     >
-      <Box>Ema Mason</Box>
-      <Box w={30} h={30}>
-        <img src={iconShopingCard} alt="icon" />
+      <Box>
+        <Text fontWeight="bold">Ema Mason</Text>
+      </Box>
+      <Box onClick={onOpen}>
+        <Img w={30} h={30} src={iconShopingCart} alt="icon" />
       </Box>
     </Box>
   );
