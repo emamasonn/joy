@@ -1,5 +1,5 @@
 import { Box, Heading, Image, Text, Flex, Button, Img } from "@chakra-ui/react";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Product } from "../types";
 //@ts-ignore
 import iconArrowDown from "../../../svg/circle-arrow-down-solid.svg";

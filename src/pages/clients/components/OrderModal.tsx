@@ -17,9 +17,10 @@ import { useShopingCart } from "../providers/ShopingCartContext";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  onOpenRequestOrder: () => void;
 };
 
-const OrderModal = ({ onClose, isOpen }: Props) => {
+const OrderModal = ({ onClose, isOpen, onOpenRequestOrder }: Props) => {
   const [shopingCart] = useShopingCart();
 
   const arrShopingCart = useMemo(
@@ -37,7 +38,7 @@ const OrderModal = ({ onClose, isOpen }: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent m="20px">
         <ModalHeader>Order</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -81,7 +82,7 @@ const OrderModal = ({ onClose, isOpen }: Props) => {
             <Button mr={3} onClick={onClose} size="sm">
               Close
             </Button>
-            <Button bg="green.200" size="sm">
+            <Button bg="green.200" size="sm" onClick={onOpenRequestOrder}>
               Accept
             </Button>
           </Box>
