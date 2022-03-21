@@ -10,7 +10,7 @@ import {
   DrawerOverlay,
   Text,
 } from "@chakra-ui/react";
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useShopingCart } from "../providers/ShopingCartContext";
 import ItemMenu from "./ItemMenu";
 
@@ -58,7 +58,6 @@ const ShopingCartDrawer = ({ isOpen, onClose }: Props) => {
           )}
         </DrawerBody>
         <DrawerFooter
-          mb="200px"
           borderTopWidth="1px"
           display="flex"
           flexDirection="column"

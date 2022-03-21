@@ -6,7 +6,7 @@ import { listMenu } from "../mockup/listMenuMockup";
 
 const ListMenu = () => {
   return (
-    <Flex direction="column">
+    <Flex direction="column" mt="60px">
       {!listMenu.length ? (
         <p>No hay productos cargados</p>
       ) : (
