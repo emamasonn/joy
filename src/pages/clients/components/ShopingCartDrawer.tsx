@@ -8,7 +8,9 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Flex,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import React, { useMemo } from "react";
 import { useShopingCart } from "../providers/ShopingCartContext";
@@ -17,9 +19,10 @@ import ItemMenu from "./ItemMenu";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  onOpenModal: () => void;
 };
 
-const ShopingCartDrawer = ({ isOpen, onClose }: Props) => {
+const ShopingCartDrawer = ({ isOpen, onClose, onOpenModal }: Props) => {
   const [shopingCart] = useShopingCart();
 
   const arrShopingCart = useMemo(
@@ -42,7 +45,11 @@ const ShopingCartDrawer = ({ isOpen, onClose }: Props) => {
         <DrawerHeader>Shopping Cart</DrawerHeader>
         <DrawerBody p={0}>
           {!arrShopingCart?.length ? (
-            <p>No hay productos</p>
+            <Flex justifyContent="center" alignItems="center" m="50px">
+              <Text textAlign="center" fontWeight="bold">
+                There's nothing in the shopping cart yet
+              </Text>
+            </Flex>
           ) : (
             arrShopingCart.map((p: any) => (
               <ItemMenu
@@ -84,11 +91,16 @@ const ShopingCartDrawer = ({ isOpen, onClose }: Props) => {
             alignItems="center"
             w="100%"
           >
-            <Button size="md" variant="outline" mr={3} onClick={onClose}>
+            <Button size="sm" variant="outline" mr={3} onClick={onClose}>
               Cancel
             </Button>
-            <Button size="md" colorScheme="blue">
-              Save
+            <Button
+              size="sm"
+              bg="green.200"
+              onClick={onOpenModal}
+              disabled={!arrShopingCart.length}
+            >
+              Order
             </Button>
           </Box>
         </DrawerFooter>
